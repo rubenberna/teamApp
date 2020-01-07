@@ -14,12 +14,17 @@ const firebase = require('./routes/queryDB');
 const poke = require('./routes/poke');
 const sendMsg = require('./routes/sendMsg');
 
-app.use('/firebase', firebase)
-app.use('/poke', poke)
-app.use('/sendMsg', sendMsg)
+app.use('/api/firebase', firebase)
+app.use('/api/poke', poke)
+app.use('/api/sendMsg', sendMsg)
 
-app.get('/', (req, res) => {
-  app.send('Hi')
-})
+if(process.env.NODE_ENV ===  'production') {
+  app.use(express.static('client/build'))
 
-app.listen(port, () => console.log(`Lestening on port ${port}`))
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
+
+app.listen(port, () => console.log(`Listening on port ${port}`))

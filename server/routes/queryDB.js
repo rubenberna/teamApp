@@ -79,6 +79,4 @@ router.post('/fetchLogs', async (req, res) => {
   res.status(201).send(records)
 })
 
-
-
 module.exports = router
